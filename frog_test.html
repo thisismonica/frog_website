@@ -7,14 +7,61 @@
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-</head>
-<body>
-<div class="container">
- 	<!-- Code Mirror -->
+  <!-- Code Mirror Script-->
     <link rel="stylesheet" href="codemirror/lib/codemirror.css">
-    <link rel="stylesheet" href="codemirror/theme/elegant.css">
+    <link rel="stylesheet" href="codemirror/theme/frog.css">
     <script src="codemirror/lib/codemirror.js"></script>
     <script src="codemirror/mode/clike/clike.js"></script>
+  <!-- Self-Built Script -->
+  	<script src="js/main.js"></script>
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/index.html">Frog</a>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li ><a href="/frog_test.html"> Source Code</a></li>
+        <li><a href="#">Test Suites Generator</a></li>
+        <li><a href="#">Fault Localization</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- End of Navigation Bar -->
+
+<!-- Code Editor -->
+<div class="container" >
+<h2 class="text-center">Frog Bug Finder <small>Testing Panel</small></h2>
+<div class="row">
+	<div class="col-md-12">
+		<div class="alert alert-warning">
+			<p><strong>Instructions</strong>: Upload source code, then select target function for testing. After test cases are generated, please judge test case replayed result based on program functionality. Lastly, bugs are captured by <em>Frog</em> </p>
+		</div>
+	</div>
 </div>
+<hr>
+
+<form >
+    <textarea id="code" name="code"></textarea>
+</form>
+<hr>
+<button type="button" id="generateTestButton" data-loading-text="Generating..." class="btn btn-success" autocomplete="off">
+  Generate Test Suite
+</button>
+
+<script>
+  $('#generateTestButton').on('click', function () {
+    var $btn = $(this).button('loading')
+    // business logic...
+    //$btn.button('reset')
+  })
+</script>
+</div>
+<!-- End of Code Editor -->
+
 </body>
 </html>

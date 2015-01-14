@@ -1,0 +1,16 @@
+.cm-s-elegant span.cm-number, .cm-s-elegant span.cm-string, .cm-s-elegant span.cm-atom {color: #127A06;font-size: 1.2em; font-family: Arial, Helvetica, sans-serif;}
+.cm-s-elegant span.cm-comment {color: #B6B5B5; font-size: 1.2em; font-style: italic; line-height: 1.2em;font-family: Arial, Helvetica, sans-serif;}
+.cm-s-elegant span.cm-meta {color: #555755; font-size: 1.2em; font-style: italic; line-height: 1.2em;font-family: Arial, Helvetica, sans-serif;}
+.cm-s-elegant span.cm-variable {color: black;font-size: 1.2em;font-family: Arial, Helvetica, sans-serif;}
+.cm-s-elegant span.cm-variable-2 {color: #b11;font-size: 1.2em;font-family: Arial, Helvetica, sans-serif;}
+.cm-s-elegant span.cm-qualifier {color: #555;font-size: 1.2em;font-family: Arial, Helvetica, sans-serif;}
+.cm-s-elegant span.cm-keyword {color: #2152AC; font-size: 1.2em; font-family: Arial, Helvetica, sans-serif;} 
+.cm-s-elegant span.cm-builtin {color: #2152AC; font-size: 1.2em;font-family: Arial, Helvetica, sans-serif;}
+.cm-s-elegant span.cm-link {color: #762; font-size: 1.2em;font-family: Arial, Helvetica, sans-serif;}
+.cm-s-elegant span.cm-error {background-color: #fdd; font-size: 1.2em;font-family: Arial, Helvetica, sans-serif;}
+
+.cm-s-elegant .CodeMirror-activeline-background {background: #e8f2ff !important;}
+.cm-s-elegant .CodeMirror-matchingbracket {outline:1px solid grey; color:black !important;}
+.CodeMirror-gutters {
+    background-color: #ffffff;
+}
