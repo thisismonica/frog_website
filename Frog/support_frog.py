@@ -20,7 +20,6 @@ B[] bad coverage - [test] // usually caused by seg fault
 @input M[][], [test][stmt], which test case execute which stmt
 @output B[], [test], which test case is bad
 '''
-
 def getBadTestCoverage(M):
 	numTests = len(M)
 	B = []
