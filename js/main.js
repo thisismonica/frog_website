@@ -53,6 +53,7 @@ $(document).ready(function() {
                     // Show step2 options
                     $("#extract-functions").show("slow");
                     window.location.href = "#step2";
+                    showConsole(1);
                 }
             }
             else{
@@ -79,6 +80,9 @@ $(document).ready(function() {
     editor.on("change",function(cm){
         editChanged = true;
     });
+
+    // Show console at the top
+    showConsole(1);
 
 
     // TEST: marker function of code mirror
@@ -153,14 +157,16 @@ function call_extract_function_script(){
             if(json['success']){
                 if( $('#function-list').is(":visible")){
                     $('#function-list').hide("slow");
-                    $('#function-list').show("slow");        
+                    $('#function-list').show("slow");         
                 }else{
                     $('#function-list').show("slow");    
                 }
-                        
+                // Move console and page position
+                showConsole(2); 
+                window.location.href = "#step3"; 
+                      
                 clearTable();
-                drawTable(json['content']);
-                window.location.href = "#step3";              
+                drawTable(json['content']);                      
             }else{
                 writeToConsole(json['msg'], 'danger');
             }
@@ -222,13 +228,20 @@ function createTestFile(id){
                 }
                 else
                 { 
-                    $("#code-area").hide("slow");  
-                    $("#code-area").show("clip");
                     writeToConsole("Displayed instrumented test file", "normal");
 
                     // Display file content
                     editor.setValue(json['content']);
-                    editChanged = false; // reset change flag
+                    editChanged = false;
+
+                    // Show result and move console
+                    if( $('#test-suite').is(":visible") ){
+                        $('#test-suite').hide("slow");
+                        $('#test-suite').show("slow");          
+                    }else{
+                        $('#test-suite').show("slow");    
+                    }
+                    showConsole(3);
                 }
             }
             else{
@@ -242,4 +255,25 @@ function createTestFile(id){
             writeToConsole(xhRequest.status+": "+thrownError, 'danger');
         }   
     });
+}
+
+function showConsole(console_id){
+    switch(console_id){
+        case 1:
+            $('#console-div1').show();
+            $('#console-div2').hide();
+            $('#console-div3').hide();
+        break;
+        case 2:
+            $('#console-div1').hide();
+            $('#console-div2').show();
+            $('#console-div3').hide();
+        break;
+        case 3:
+            $('#console-div1').hide();
+            $('#console-div2').hide();
+            $('#console-div3').show();
+        break;
+        default:
+    }
 }

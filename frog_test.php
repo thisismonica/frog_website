@@ -30,7 +30,7 @@
   <!-- Self-Built Style -->
   <style>
     div.scroll {
-    height: 335px;
+    height: 100px;
     overflow: scroll;
     }
   </style>
@@ -87,11 +87,11 @@
         </div>
       </div>
     </div>  
-    <!-- Console -->
-    <div class="col-md-4">
+    <!-- Console1 -->
+    <div class="col-md-4" id="console-div1">
       <div class="panel panel-warning" >
       <div class="panel-heading">Testing Console</div>
-      <div class="panel-body"><div class=scroll id="console"></div></div>
+      <div class="panel-body"><div class=scroll id="console1"></div></div>
       </div>
     </div>
   </div>
@@ -127,6 +127,13 @@
             </form>
             </div>
             </div>
+      </div>
+      <!-- Console2 -->
+      <div hidden class="col-md-4" id="console-div2">
+        <div class="panel panel-warning" >
+        <div class="panel-heading">Testing Console</div>
+        <div class="panel-body"><div class=scroll id="console2"></div></div>
+        </div>
       </div>
     </div>
     <!-- Generate Test Suite -->
@@ -165,6 +172,13 @@
           </div>
           </div>
     </div>
+    <!-- Console3 -->
+      <div hidden class="col-md-4" id="console-div3">
+        <div class="panel panel-warning" >
+        <div class="panel-heading">Testing Console</div>
+        <div class="panel-body"><div class=scroll id="console3"></div></div>
+        </div>
+      </div>
     </div>
   </div>
   <!-- End of Test case list -->
@@ -181,19 +195,29 @@
 <!-- End of Footer -->
 
 <script>
+  /*
+   * button function to extract function list
+   */
   $('#extract-functions-button').on('click', function () {
     var $btn = $(this).button('loading');
-    // business logic...
+
+    // Extract functions...
     extractFunctions();
+
     $btn.button('reset')
   });
+
+  /*
+   * button function to generate test cases
+   */
   $('#generate-test-button').on('click', function () {
-    var $btn = $(this).button('loading')
-    // business logic...
+    var $btn = $(this).button('loading');
+
+    // Get selected funciton id/ Instrument source code
     var radio = $('input[name="function_id"]:checked').val();
-    $('#test-suite').show('slow');
-    $btn.button('reset');
     createTestFile(radio);
+
+    $btn.button('reset');
   });
 </script>
 
