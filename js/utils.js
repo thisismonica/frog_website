@@ -1,11 +1,12 @@
 /*
- * Output to Result Window 
+ * Output to Console
  */
-function writeToResultWindow(msg, type)
+function writeToConsole(msg, type)
 {
-  alert(msg);
+  
     type = typeof type !== 'undefined' ? type : "normal";
-    var resWin = $('#result-window');
+    var resWin = $('#console');
+    resWin.show();
 
     if(type == "normal")
     {
@@ -13,7 +14,7 @@ function writeToResultWindow(msg, type)
         var now = new Date();
         var timestamp = now.getHours()+":"+now.getMinutes()+":"+now.getSeconds()+":"+now.getMilliseconds();
 
-        resWin.append("<p class=\"normal\">"+timestamp+"\t"+msg+"</p>");
+        resWin.append("<p class=\"normal\">["+timestamp+"]\t"+msg+"</p>");
     }
     else
     {
