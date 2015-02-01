@@ -61,6 +61,7 @@
   <h2 class="text-center">Frog Bug Finder <small>Testing Panel</small></h2>
 </div>
 
+<div class="container" >
 
 <!-- Instructions -->
 <div hidden class="row">
@@ -70,11 +71,19 @@
 </div>
 
 <!-- ===========================================Testing Panel Body====================================================-->
-<div class="container">
+<div class="container-fluid">
+<div class="row-fluid">
 <a name="step2"/>
+  <!-- Console -->
+    <!--<div class="col-md-4"> -->
+    <div class="offset1 col-md-4 pull-right">
+      <div class="panel panel-warning" >
+      <div class="panel-heading">Testing Console</div>
+      <div class="panel-body"><div class=scroll id="console"></div></div>
+      </div>
+    </div>
 
   <!-- Code Editor and Console --> 
-  <div class="row">
     <!-- Code Editor -->    
     <div class="col-md-8" id="code-area">
       <div class="panel panel-success">
@@ -87,16 +96,8 @@
         </div>
       </div>
     </div>  
-    <!-- Console -->
-    <div class="col-md-4">
-      <div class="panel panel-warning" >
-      <div class="panel-heading">Testing Console</div>
-      <div class="panel-body"><div class=scroll id="console"></div></div>
-      </div>
-    </div>
-  </div>
   <!-- End of Code Editore and Console -->
-
+  
   <!-- Buttons -->
   <div class="row">
     <div id="extract-functions" class="col-md-4">
@@ -104,13 +105,13 @@
       <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  Extract Functions</button>
     </div>
   </div>
-</div>
+
 <!-- ===========================================Testing Result Body====================================================-->
 <a name="step3"/>
   <!-- Function List--> 
-  <div hidden class="container" id="function-list">
-    <hr>
-    <div class="row">
+  <div hidden class="contain" id="funciton-list">
+    <div class="row" >
+      <hr>
       <div class="col-md-8">
         <div  class="panel panel-info" >
             <div class="panel-heading">Function List</div>
@@ -130,7 +131,7 @@
       </div>
     </div>
     <!-- Generate Test Suite -->
-    <div class="row">
+    <div id="generate-test" class="row">
       <div class="col-md-8">
         <button type="button" id="generate-test-button" data-loading-text="Generating..." class="btn btn-success" autocomplete="off">
         <span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>  Generate Test Suite</button>
@@ -140,9 +141,8 @@
   <!-- End of Function List--> 
 
   <!-- Test case list -->
-  <div hidden id="test-suite" class="container">
+  <div hidden id="test-suite" class="row">
     <hr>
-    <div class="row">
     <div class="col-md-8">
       <div  class="panel panel-primary" >
           <div class="panel-heading">Test Suite Result</div>
@@ -165,10 +165,10 @@
           </div>
           </div>
     </div>
-    </div>
   </div>
   <!-- End of Test case list -->
 
+</div>
 </div>
 
 <!-- Footer -->
