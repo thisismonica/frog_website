@@ -18,3 +18,9 @@ int max( int x)
 {
 	return x;
 }
+#include "klee.h"
+#include "ansi_prefix.PPCEABI.bare.h"
+int main() {
+	 result=();
+	return;
+}
