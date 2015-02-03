@@ -53,7 +53,9 @@ if not os.path.isfile(target):
 '''
 print "\n1. Astyle target file: "+target
 '''
-astyle_return = subprocess.call("astyle --style=allman "+target,shell=True)
+import os
+with open(os.devnull,'w') as f:
+	astyle_return = subprocess.call("astyle --style=allman "+target,shell=True, stdout=f)
 if astyle_return == 1:
 	res['msg'] = "Unable to run Astyle on source code"
 	print json.dumps(res)
