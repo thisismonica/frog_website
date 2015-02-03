@@ -150,6 +150,7 @@ function call_extract_function_script(){
         url: 'server/extract_functions.php',
         type: "POST", 
         success: function(msg){
+
             // Parsing json data from server
             var json="";
             eval('json='+msg+';');

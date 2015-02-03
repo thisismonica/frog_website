@@ -25,15 +25,15 @@ if(isset($_FILES["source_code"]))
  	 	// Store file in server
  		if(move_uploaded_file($_FILES["source_code"]["tmp_name"], $target_path) ){
 
-    		//TODO: file name for specific user
-    		$_SESSION['curr_file'] = $target_path;
-    		$ret['file_name']= $file_name;
-    	}
+			//TODO: file name for specific user
+			$_SESSION['curr_file'] = $target_path;
+			$ret['file_name']= $file_name;
+			$ret['success'] = true;
+		}
 
-    	// Read file content
-        $file_content = file_get_contents($target_path);
-        $ret['content'] = $file_content;
-        $ret['success'] = true;
+		// Read file content
+		$file_content = file_get_contents($target_path);
+		$ret['content'] = $file_content;
 	}
     echo json_encode($ret);
 }
