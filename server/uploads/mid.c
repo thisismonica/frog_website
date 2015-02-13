@@ -1,4 +1,4 @@
-int mid( int x, int y, int z )
+unsigned int mid( unsigned int x, unsigned int y, int z )
 {
     int m;
     m=z;

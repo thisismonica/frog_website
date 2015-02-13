@@ -1,3 +1,13 @@
+<?php
+    session_start();
+
+    if(!isset($_SESSION['username']))
+    {
+        header("Location: index.html");
+        exit;
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,11 +54,17 @@
     <div class="navbar-header">
       <a class="navbar-brand" href="/index.html">Frog</a>
     </div>
-    <div>
+    <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li ><a href="/frog_test.php"> Source Code</a></li>
         <li><a href="#">Test Suites Generator</a></li>
         <li><a href="#">Fault Localization</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+      <?php 
+        session_start();
+        echo '<li><p class="navbar-text text-right">Welcome, <strong>'.$_SESSION['username'].'</strong>!</p></li>';
+        ?> 
       </ul>
     </div>
   </div>
@@ -60,7 +76,6 @@
 <div class="page-header">
   <h2 class="text-center">Frog Bug Finder <small>Testing Panel</small></h2>
 </div>
-
 
 <!-- Instructions -->
 <div hidden class="row">

@@ -1,4 +1,4 @@
-int mid( int x, int y, int z )
+unsigned int mid( unsigned int x, unsigned int y, int z )
 {
     int m;
     m=z;
@@ -17,9 +17,11 @@ int max( int x)
 {
     return x;
 }
+
 #include "klee.h"
-#include "ansi_prefix.PPCEABI.bare.h"
 int main() {
-	 result=();
+	int a0;
+	klee_make_symbolic(&a0,sizeof(a0),"a0");
+	int result=max(a0);
 	return;
 }
