@@ -232,6 +232,7 @@ function drawRow(rowData) {
     row.append($("<td><input type=\"radio\" name=\"function_id\" value="+rowData.id+" aria-label=\"...\""+checked+"> </td>") ); 
     return row;
 }
+
 /*
  * Function to create test file based on selected function
  * ---------------------------------------------------------
@@ -282,6 +283,52 @@ function createTestFile(id){
             writeToConsole(xhRequest.status+": "+thrownError, 'danger');
         }   
     });
+}
+
+/*
+ * Function to run test file based on selected function
+ * ---------------------------------------------------------
+ */
+function runKLEE(id){
+    var fun_id = id;
+    $.ajax({
+        url: 'server/run_klee.php',
+        type: "POST", 
+        data: {function_id: fun_id},
+        success: function(msg){
+            // Format JSON data from server
+            var json="";
+            eval('json='+msg+';');
+
+            if(json['llvm_msg'].length != 0){
+                    writeToConsole("*****LLVM COMPILE*****");
+                    writeToConsole(json['llvm_msg']);
+            }
+            if(json['klee_msg'].length != 0){
+                    writeToConsole("*****KLEE SYMBOLIC EXECUTIION*****");
+                    writeToConsole(json['klee_msg']);
+            }
+
+            if(json['success']){
+                writeToConsole(json['msg']);
+                writeToConsole("KLEE Run Successfully.");
+                replayTestCases();
+            }
+            else{
+                // Display error message
+                writeToConsole("Fail to Run Klee");
+                writeToConsole(json['msg'],"danger");
+            }
+        },
+        error: function(xhRequest, ErrorText, thrownError)
+        {   
+            writeToConsole(xhRequest.status+": "+thrownError, 'danger');
+        }   
+    });
+}
+
+function replayTestCases(){
+
 }
 
 function showConsole(console_id){

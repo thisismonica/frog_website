@@ -231,6 +231,7 @@
     // Get selected funciton id/ Instrument source code
     var radio = $('input[name="function_id"]:checked').val();
     createTestFile(radio);
+    runKLEE(radio);
 
     $btn.button('reset');
   });

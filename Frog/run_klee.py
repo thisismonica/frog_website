@@ -11,7 +11,7 @@ from support_frog import compute
 # version 1.0: compile & run klee
 # usage: python run_klee.py [file name]
 # output: res['msg'] and res['success']
-#
+# output: KLEE message in res['klee_msg'], LLVM message in res['llvm_msg']
 #####################################################
 res = {}
 res['success'] = False
@@ -76,11 +76,11 @@ if os.path.isfile(testFileObject):
 
 with open(LLVM_COMPILE_MSG, 'w') as f:
 	returncode = subprocess.call(linkCmd, stdout=f, shell=True)
+with open(LLVM_COMPILE_MSG, 'r') as f:
+		res['llvm_msg'] = f.readlines()
 
 if returncode != 0:
 	res['msg'] += "Compilation failed, please check syntax based on LLVM message\n"
-	with open(LLVM_COMPILE_MSG, 'r') as f:
-		res['llvm_msg'] = f.readlines()
 	print res
 	sys.exit() 
 
@@ -105,13 +105,14 @@ if os.path.isfile(testFileObject):
 				proc.kill()
 		returncode = proc.returncode
 
+	with open(KLEE_MSG, 'r') as f:
+				res['klee_msg'] = f.readlines()
+				
 	if isTimeout:
 		res['msg']+="KLEE alreayd run for: ",KLEE_TIMEOUT," secs" 
 	else:
 		if returncode != 0:
 			res['msg'] += "KLEE Failed\n"
-			with open(KLEE_MSG, 'r') as f:
-				res['klee_msg'] = f.readlines()
 			print res
 			sys.exit()
 
