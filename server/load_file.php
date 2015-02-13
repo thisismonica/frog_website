@@ -3,10 +3,12 @@ session_start();
 $res = array();
 if(!isset($_SESSION['curr_file']))
 {
-    $res['msg'] = "Error: Test file does not exist. Please extract functions first.";
+    $res['msg'] = "not uploaded."; 
     $res['success'] = false;
+    $res['unset'] = true;
     
 }else{
+    $res['unset'] = false;
     // Source code files name
     $target_path = $_SESSION['curr_file'];
 

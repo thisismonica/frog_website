@@ -189,10 +189,13 @@ function loadCodeEditor(){
                 }
             }
             else{
-                // Display error message
-                writeToConsole("Fail to read test file ");
-                writeToConsole(json['msg'],"danger");
-            }
+		if(!json['unset']){
+
+			// Display error message
+			writeToConsole("Fail to read test file ");
+			writeToConsole(json['msg'],"danger");
+		    }
+		}
         },
         error: function(xhRequest, ErrorText, thrownError)
         {   

@@ -1,6 +1,20 @@
-/node_modules
-/npm-debug.log
-test.html
-.tern-*
-*~
-*.swp
+# Coverage Files
+*.gcda
+*.gcno
+*.gcov
+
+# Object Files
+*.o
+*.replay
+
+# Python compile files
+*.pyc
+
+# KLEE Result 
+klee-out*
+
+# Configuration
+.*
+
+# Temp file
+temp*
