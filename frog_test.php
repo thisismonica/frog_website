@@ -1,3 +1,13 @@
+<?php
+    session_start();
+
+    if(!isset($_SESSION['username']))
+    {
+        header("Location: index.html");
+        exit;
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +40,7 @@
   <!-- Self-Built Style -->
   <style>
     div.scroll {
-    height: 335px;
+    height: 100px;
     overflow: scroll;
     }
   </style>
@@ -44,11 +54,17 @@
     <div class="navbar-header">
       <a class="navbar-brand" href="/index.html">Frog</a>
     </div>
-    <div>
+    <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li ><a href="/frog_test.php"> Source Code</a></li>
         <li><a href="#">Test Suites Generator</a></li>
         <li><a href="#">Fault Localization</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+      <?php 
+        session_start();
+        echo '<li><p class="navbar-text text-right">Welcome, <strong>'.$_SESSION['username'].'</strong>!</p></li>';
+        ?> 
       </ul>
     </div>
   </div>
@@ -60,7 +76,6 @@
 <div class="page-header">
   <h2 class="text-center">Frog Bug Finder <small>Testing Panel</small></h2>
 </div>
-
 
 <!-- Instructions -->
 <div hidden class="row">
@@ -87,11 +102,11 @@
         </div>
       </div>
     </div>  
-    <!-- Console -->
-    <div class="col-md-4">
+    <!-- Console1 -->
+    <div class="col-md-4" id="console-div1">
       <div class="panel panel-warning" >
       <div class="panel-heading">Testing Console</div>
-      <div class="panel-body"><div class=scroll id="console"></div></div>
+      <div class="panel-body"><div class=scroll id="console1"></div></div>
       </div>
     </div>
   </div>
@@ -127,6 +142,13 @@
             </form>
             </div>
             </div>
+      </div>
+      <!-- Console2 -->
+      <div hidden class="col-md-4" id="console-div2">
+        <div class="panel panel-warning" >
+        <div class="panel-heading">Testing Console</div>
+        <div class="panel-body"><div class=scroll id="console2"></div></div>
+        </div>
       </div>
     </div>
     <!-- Generate Test Suite -->
@@ -165,6 +187,13 @@
           </div>
           </div>
     </div>
+    <!-- Console3 -->
+      <div hidden class="col-md-4" id="console-div3">
+        <div class="panel panel-warning" >
+        <div class="panel-heading">Testing Console</div>
+        <div class="panel-body"><div class=scroll id="console3"></div></div>
+        </div>
+      </div>
     </div>
   </div>
   <!-- End of Test case list -->
@@ -181,19 +210,29 @@
 <!-- End of Footer -->
 
 <script>
+  /*
+   * button function to extract function list
+   */
   $('#extract-functions-button').on('click', function () {
     var $btn = $(this).button('loading');
-    // business logic...
+
+    // Extract functions...
     extractFunctions();
+
     $btn.button('reset')
   });
+
+  /*
+   * button function to generate test cases
+   */
   $('#generate-test-button').on('click', function () {
-    var $btn = $(this).button('loading')
-    // business logic...
+    var $btn = $(this).button('loading');
+
+    // Get selected funciton id/ Instrument source code
     var radio = $('input[name="function_id"]:checked').val();
-    $('#test-suite').show('slow');
-    $btn.button('reset');
     createTestFile(radio);
+
+    $btn.button('reset');
   });
 </script>
 

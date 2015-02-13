@@ -75,6 +75,7 @@ $(document).ready(function() {
         theme: "elegant",
         mode: "text/x-csrc"
     });
+    loadCodeEditor();
 
     // Fire when editor content changed
     editor.on("change",function(cm){
@@ -91,25 +92,6 @@ $(document).ready(function() {
     markerWarning = editor.doc.markText({line:4,ch:0},{line:5,ch:0},{className:"warning"});
     */
     
-    // Tool tips on buttons
-    //$('.btn').tooltip();
-    
-    // Idle timeout
-    // start the idle timer plugin
-    /*$.idleTimeout('#logout_popup_open', '#btn-continue-logout', {
-        idleAfter: 300,
-        //pollingInterval: 2,
-        //keepAliveURL: 'keepalive.php',
-        //serverResponseEquals: 'OK',
-        warningLength: 60,
-        onTimeout: function(){
-            window.location = "php/signout.php";
-        },
-        onIdle: function(){
-            $(this).trigger("click");
-        }
-    });*/
-
 });
 
 /*
@@ -177,6 +159,47 @@ function call_extract_function_script(){
             writeToConsole(xhRequest.status+": "+thrownError, 'danger');
         }   
     });
+}
+
+/*
+ * To load source code
+ */
+function loadCodeEditor(){
+    // Request for source code saved
+    $.ajax({
+        url: 'server/load_file.php',
+        type: "POST", 
+        success: function(msg){
+            // Format JSON data from server
+            var json="";
+            eval('json='+msg+';');
+
+            // Display code if upload success
+            if(json['success']){
+                if(json['content'] == null)
+                {
+                    // Null content 
+                    writeToConsole("Fail to read source code file ", "warning");
+                }
+                else
+                { 
+                    // Display file content
+                    editor.setValue(json['content']);
+                    editChanged = false;
+                }
+            }
+            else{
+                // Display error message
+                writeToConsole("Fail to read test file ");
+                writeToConsole(json['msg'],"danger");
+            }
+        },
+        error: function(xhRequest, ErrorText, thrownError)
+        {   
+            writeToConsole(xhRequest.status+": "+thrownError, 'danger');
+        }   
+    });
+
 }
 
 /*

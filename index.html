@@ -36,17 +36,69 @@
        <p>2. Specify test case replay result: Pass or Fail</p>
        <p>3. Visualize potential bug locations in source code</p>
      </div>
-     <p>It is <em>that</em> easy!<p>
+     <p>It is <em>that</em> easy!</p>
     <div class="text-primary">
         <p>Upload&nbsp;&nbsp;Judge&nbsp;&nbsp;Find Bug</p>
       </div>
-    <a href="/frog_test.php" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Start Testing!</a>
-  </div>
+
+
+    <button id="start-button" type="button" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Start Testing!</button>
+
+    <div hidden id="user-form">
+    <p></p>
+    <p></p>
+    <p></p>
+      <!-- User Login -->
+      <form class="form-inline" method="post" action="server/login.php">
+        <div class="form-group">
+          <label class="sr-only" for="username">User Name</label>
+          <input type="text" class="form-control" name="username" id="username" placeholder="User Name">
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="password">Password</label>
+          <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox"> Remember me
+          </label>
+        </div>
+        <button type="submit" class="btn btn-success">Sign in</button>
+      </form>
+      <hr>
+      <!-- User Signup -->
+      <form hidden class="form-inline" method="post" action="server/signup.php">
+        <div class="form-group">
+          <label class="sr-only" for="username">User Name</label>
+          <input type="text" class="form-control" name="username" id="username" placeholder="User Name">
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="password1">Password</label>
+          <input type="password" class="form-control" id="password1" name="password1" placeholder="Enter Password">
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="password2">Password</label>
+          <input type="password" class="form-control" id="password2" name="password2" placeholder="Confirm Password">
+        </div>
+        <button type="submit" class="btn btn-primary">Sign up for Frog Test</button>
+      </form>
+    </div>
+</div>
+</div>
+
 <div class="container">
       <hr>
 </div> <!-- /container --> 
 <footer>
 <p class="text-center">Copyright © 2015 UCLA Design Automation Lab</p> 
 </footer>
+<script>
+  /*
+   * button function to extract function list
+   */
+  $('#start-button').on('click', function () {
+    $('#user-form').show("slow");
+  });
+  </script>
 </body>
 </html>
