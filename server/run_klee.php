@@ -14,11 +14,12 @@ if(!isset($_SESSION['curr_file']))
         $res['msg'] = "Error: Test file does not exist. NO valid functions found.";
         $res['success'] = false;
     }
-
+    else{
 	// Run python script to Compile and run KLEE
 	$command = escapeshellcmd('python ../Frog/run_klee.py ');
 	$result = shell_exec($command.$target_path);
 	$res = $result;
+	}
 }
 echo $res;
 ?>

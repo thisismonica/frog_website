@@ -300,6 +300,7 @@ function runKLEE(id){
             var json="";
             eval('json='+msg+';');
 
+	    /*
             if(json['llvm_msg'].length != 0){
                     writeToConsole("*****LLVM COMPILE*****");
                     writeToConsole(json['llvm_msg']);
@@ -308,6 +309,7 @@ function runKLEE(id){
                     writeToConsole("*****KLEE SYMBOLIC EXECUTIION*****");
                     writeToConsole(json['klee_msg']);
             }
+		*/
 
             if(json['success']){
                 writeToConsole(json['msg']);
