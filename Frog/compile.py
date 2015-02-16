@@ -18,7 +18,6 @@ from support_frog import compute
 res = {}
 res['success'] = False
 res['msg'] = ""
-res['klee_msg'] = ""
 
 ################################
 # 1 - Parse argument
@@ -30,7 +29,6 @@ if len(sys.argv) < 2:
 	sys.exit()	
 
 testFileName = sys.argv[1]
-testFileObject = re.sub('\.c$', '.o', testFileName)
 
 # Check if file exists
 if not os.path.isfile(testFileName):
@@ -44,21 +42,6 @@ if not os.path.isfile(testFileName):
 
 # KLEE Related
 KLEE_INCLUDE= "/home/qirong/Frog/frog_test/tools/KLEE_SOURCE_2015/klee/include/klee"   # Path to include files, for llvm compilation
-KLEE_TIMEOUT = 10 
-KLEE_OPTIONS = ["--allow-external-sym-calls"] #["--libc=uclibc"]#,"--posix-runtime" ]# KLEE C library Options
-KLEE_EXECUTABLE = "/home/qirong/Frog/frog_test/tools/KLEE_SOURCE_2015/klee/Release+Asserts/bin/klee"
-
-# Test Cases 
-KTEST = "/home/qirong/Frog/frog_test/tools/KLEE_SOURCE_2015/klee/tools/ktest-tool/ktest-tool "
-
-################################
-# Function definition
-###############################
-kill_check = threading.Event()
-def _kill_process(pid):
-	os.kill(pid, signal.SIGTERM)
-	kill_check.set()
-	return
 
 ################################
 # 6 - Compile to object file
@@ -78,10 +61,10 @@ if os.path.isfile(testFileObject):
 	subprocess.call("rm "+testFileObject,shell=True)
 
 # Compile
-proc = res['llvm_msg'] = subprocess.Popen(linkCmd, shell=True, stdout=subprocess.PIPE)
+proc = subprocess.Popen(linkCmd, shell=True, stdout=subprocess.PIPE)
 llvm_stdout, llvm_stderr = proc.communicate()
-res['llvm_msg'] = llvm_stdout if llvm_stdout else ""
-res['llvm_msg'] += llvm_stderr if llvm_stderr else ""
+res['msg'] += llvm_stdout if llvm_stdout else ""
+res['msg'] += llvm_stderr if llvm_stderr else ""
  
 if proc.returncode != 0:
 	res['msg'] += "Error: Compilation failed, please check syntax based on LLVM message\n"
@@ -92,4 +75,3 @@ else:
 	res['success'] =True
 	print res
 	sys.exit()
-
