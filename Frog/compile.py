@@ -9,11 +9,16 @@ import struct
 from support_frog import compute
 
 ############################################################################
-# run_klee.py
-# version 1.0: run klee
-# usage: python run_klee.py [file name]
-# output: klee msg 
+# compile.py 
+# version 1.0: compile 
+# usage: python compile.py [file name]
+# output: res['msg'] and res['success']
+# output: LLVM message in res['llvm_msg']
 ###########################################################################
+res = {}
+res['success'] = False
+res['msg'] = ""
+res['klee_msg'] = ""
 
 ################################
 # 1 - Parse argument
@@ -24,7 +29,8 @@ if len(sys.argv) < 2:
 	print res
 	sys.exit()	
 
-testFileObject= sys.argv[1]
+testFileName = sys.argv[1]
+testFileObject = re.sub('\.c$', '.o', testFileName)
 
 # Check if file exists
 if not os.path.isfile(testFileName):
@@ -55,57 +61,35 @@ def _kill_process(pid):
 	return
 
 ################################
-# 7 - Klee run
+# 6 - Compile to object file
 ################################
 
+linkAddr = []
+linkAddr.append(KLEE_INCLUDE)
+
+linkCmd = "llvm-gcc --emit-llvm -c -g"
+for addr in linkAddr:
+	linkCmd += " -I"+addr
+linkCmd += " "+testFileName
+linkCmd += " -o "+testFileObject
+
+# Delete old object
 if os.path.isfile(testFileObject):
-	# Run KLEE	
-	proc = subprocess.Popen([KLEE_EXECUTABLE]+KLEE_OPTIONS+[testFileObject], stdout=subprocess.PIPE)
+	subprocess.call("rm "+testFileObject,shell=True)
 
-	# Set watchdog timer
-	pid = proc.pid
-	watchdog = threading.Timer(KLEE_TIMEOUT,_kill_process, args=(pid,))
-	watchdog.start()
-	(klee_stdout, klee_stderr) = proc.communicate()
-	returncode = proc.returncode
-	watchdog.cancel()
-	isTimeout = kill_check.isSet()
-	'''
-	start = time.time()
-	isTimeout = False
-	timeout = KLEE_TIMEOUT 
-	while proc.poll() is None:
-		time.sleep(0.1)
-		now = time.time()
-		if (now-start) > timeout:
-			res['msg'] += "KLEE timeout..."
-			isTimeout = True
-			proc.kill()
-	returncode = proc.returncode
-	if proc.stdout:
-		klee_stdout = proc.stdout.read()
-		#klee_stdout, klee_stderr= proc.communicate()
-	
-	with open(KLEE_MSG, 'r') as f:
-		res['klee_msg'] = f.readlines()
-	'''
-	res['klee_msg'] = klee_stdout if klee_stdout else ""
-	res['klee_msg'] += klee_stderr if klee_stderr else ""
-
-	if isTimeout:
-		res['msg']+="KLEE alreayd run for: ",KLEE_TIMEOUT," secs" 
-	else:
-		if returncode != 0:
-			res['msg'] += "KLEE Failed\n"
-			print res
-			sys.exit()
-
-	# Sucessfully run klee, Output
-	res['msg'] += "KLEE Run Sucessfully.\n"
-	res['success'] = True
-	print res 
-
+# Compile
+proc = res['llvm_msg'] = subprocess.Popen(linkCmd, shell=True, stdout=subprocess.PIPE)
+llvm_stdout, llvm_stderr = proc.communicate()
+res['llvm_msg'] = llvm_stdout if llvm_stdout else ""
+res['llvm_msg'] += llvm_stderr if llvm_stderr else ""
+ 
+if proc.returncode != 0:
+	res['msg'] += "Error: Compilation failed, please check syntax based on LLVM message\n"
+	print res
+	sys.exit() 
 else:
-	res['msg'] += "Object file does not exist."
+	res['msg'] += "Compilation succeed.\n"
+	res['success'] =True
 	print res
 	sys.exit()
+
