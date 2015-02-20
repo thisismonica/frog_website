@@ -6,7 +6,7 @@ import os
 from support_frog import compute
 import json
 from function import Function
-import pickel
+import pickle
 
 #####################################################
 # extract_functions2.py
@@ -193,7 +193,7 @@ for fid in range(len(kleeFunc)):
 				argIsPointer.append(False)
 				argName.append(argArr[-1].strip())
 
-	argSize = [ 1 for cnt in range(len(argType))]
+	argSize = [ DEFAULT_SIZE for cnt in range(len(argType))]
 
 	# Store function data
 	fdata = Function()

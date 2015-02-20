@@ -8,13 +8,15 @@ import time
 import struct
 from support_frog import compute
 import json
+from function import Function
+import pickle
 
 ############################################################################
 # replay.py 
 # version 1.0: replay test cases then run tarantula 
-# usage: python replay.py [test file]
+# usage: python replay.py [test file] (e.g. mid.c0.test.c)
 # output: res['msg'] and res['success']
-# output: res['test'] test case string array
+# output: res['test_output'] test case dictionary array - ['arg'] argument string, ['return'] output string
 # output file: [test file name]_matrix.txt
 ###########################################################################
 
@@ -39,22 +41,28 @@ CTYPE_DICT = {'int':'%d', 'unsigned int':'%u','double':'%f','float':'%f'}
 ################################
 
 if len(sys.argv) < 2:
-	res['msg'] += "Missing argument. Exit.\n"
+	res['msg'] += "Error: Missing argument. Exit.\n"
 	print json.dumps(res)
 	sys.exit()	
 targetFile = sys.argv[1]
 test_path = os.path.dirname(targetFile)
 
+# Change directory to test file
+os.chdir(test_path)
+targetFile = os.path.basename(targetFile)
+
 # Check if file exists
-klee_dir = test_path+'/klee-last/';
+klee_dir = 'klee-last/';
 if not os.path.exists(klee_dir):
-	res['msg'] += "KLEE output does not exists. Exit.\n"
+	res['msg'] += "Error: KLEE output does not exists. Exit.\n"
 	print json.dumps(res)
-	sys.exit()
+	sys.exit(1)
 
 # Get function data from pickle
-if not os.path.isfile(targetFile+".pickle"):
-	res['msg'] += "Function data of test file does not exists. Exit.\n"
+pickle_filename = targetFile+".pickle"
+if not os.path.isfile(pickle_filename):
+	print pickle_filename
+	res['msg'] += "Error: Function data of test file does not exists. Exit.\n"
 	print json.dumps(res)
 	sys.exit()
 with open(targetFile+".pickle", "rb") as fb:
@@ -96,10 +104,14 @@ with open(targetFile+"_coverage.txt",'w') as fout:
 		testnum += 1
 		argcount = 0
 		argval = []
+		case = {}
+		case['arg'] = ""
+		case['output'] = ""
 
+		#########################################
 		# Find test case value for each argument
+                ########################################
 		with open(temp_tests,'r') as f:
-			testcase_str = ""
 			for line in f:
 				a = p.findall(line)	
 				# If match one parameter value
@@ -120,21 +132,22 @@ with open(targetFile+"_coverage.txt",'w') as fout:
 							unpack_type = TYPE_DICT[ argType[argcount] ]
 
 							try:
-								for j in range(size):
+								for j in range(argSize[argcount]):
 									val = struct.unpack(unpack_type, arg[j*length:(j+1)*length] )[0]
 									arg_array.append(val)
 							except struct.error:
-								res['msg'] = "Error: Invalid argument type, unable to unpack from binary format. Check ",KTEST
+								res['msg'] = "Error: Invalid argument type, unable to unpack from binary format. unpack type is: "+unpack_type
+
 								print json.dumps(res)
 								sys.exit(1)
 							
 							# Display test cases
 							display = argName[ index ] + "="
-							
-							# Special array: string
 							if argType[argcount] == 'char':
 								arg_array = "".join(arg_array)
-							testcase_str = display + str(arg_array)
+							if argcount != 0:
+								case['arg'] += ","
+							case['arg'] += " "+  display + str(arg_array)
 							
 							# Add test cases for replay
 							argval.append( str(arg_array) )
@@ -153,22 +166,27 @@ with open(targetFile+"_coverage.txt",'w') as fout:
 							
 							# Display test cases
 							argstr = argName[index]+" = " + str(val)
-							testcase_str = argstr
+							if argcount != 0:
+								case['arg'] += ","
+							case['arg'] += " "+ argstr
 							
 							# Add test cases for replay
 							argval.append( str(val) )
 							argcount += 1
-					
-		# Judge if argument number valid
+		
+		# Check if argument number valid
 		if argcount != len(argName):
 			res['msg'] +=  "ERROR: Invalid argument number of only "+str(argcount)
 			continue	
 
+		############################
 		# Build replay test file
+                ############################
 		replayFileName = targetFile + '.replay.c'
+		originalFile = re.sub(r'[0-9]+\.test\.c$',"",targetFile)
 		if os.path.isfile(replayFileName):
 			subprocess.call('rm '+replayFileName, shell=True)
-		subprocess.call('cp '+targetFile+' '+replayFileName, shell=True)
+		subprocess.call('cp '+originalFile+' '+replayFileName, shell=True)
 
 		with open(replayFileName, 'ab') as f:
 			appendCode = "\n#include <stdio.h>\n"
@@ -180,7 +198,7 @@ with open(targetFile+"_coverage.txt",'w') as fout:
 			for i,a in enumerate(argval):
 				# Example: int a[5] = {1,2,3,4,5};
 				if argIsPointer[i] and argType[i] != 'char':
-					s1 = str(argval) 
+					s1 = str(argval[i]) 
 					s1 = s1.replace('[','{')
 					s1 = s1.replace(']','}')
 					arg_symbol= "a"+str(array_cnt)
@@ -214,25 +232,39 @@ with open(targetFile+"_coverage.txt",'w') as fout:
 				appendCode+='\n\treturn;\n}'
 			f.write(appendCode)
 		
-		# Compile test file
-		replayOutput = target + '.replay'
-		returnval = subprocess.call('gcc -w -fprofile-arcs -ftest-coverage '+replayFileName+' -o '+replayOutput, shell=True)
-		if returnval != 0:
+		############################# 
+		# Compile replay test file
+                ############################
+		replayOutput = targetFile + '.replay'
+		try:
+			gcc_out = subprocess.check_output('gcc -w -fprofile-arcs -ftest-coverage '+replayFileName+' -o '+replayOutput+" 2>&1", shell=True)
+		except subprocess.CalledProcessError as e:
 			res['msg'] +='ERROR: gcc compile for repalying failed'
-			continue
+		        print json.dumps(res)
+			sys.exit(1)	
 		
+		#######################
 		# Run test file
-		replay_stdout = subprocess.check_output('./'+replayOutput, shell=True)
-		testcase_str += replay_stdout
+                #######################
+		try:
+			replay_stdout = subprocess.check_output('./'+replayOutput, shell=True)
+		except subprocess.CalledProcessError as e:
+			res['msg'] += 'Replay program has non-zero exit status'
+			case['output'] = e.output
+		else:
+			case['output'] = replay_stdout
 		
+		########################
 		# Get coverage
-		returnval = subprocess.call('gcov '+replayFileName, shell=True)
-		if returnval != 0:
-			res['msg'] ='ERROR: gcov failed, press ENTER to continue...'
+                #######################
+		try:
+			gcov_out = subprocess.check_output('gcov '+replayFileName+" 2>&1", shell=True)
+		except subprocess.CalledProcessError as e:
+			res['msg'] ='ERROR: gcov failed: '+e.output
 			print json.dumps(res)
 			sys.exit(1)
 
-		# RE for not covered lines, marked with"#####" in gcov
+		# Initialze gcov file name
 		gcovFileName = replayFileName+'.gcov'
 		lineCoverage = []
 		
@@ -247,10 +279,10 @@ with open(targetFile+"_coverage.txt",'w') as fout:
 				else:
 					lineCoverage.append(True)
 		
-		test_output.append(testcase_str)			
-		fout.write(lineCoverate+"\n")
+		test_output.append(case)			
+		fout.write(str(lineCoverage) +"\n")
 
-res['test_output'] = str(test_output)
-res['msg'] = "Repaly Suceed."
+res['test_output'] = test_output 
+res['msg'] = "Replay Succeed."
 res['success'] = True
 print json.dumps(res)

@@ -176,12 +176,6 @@
               <th>Test Cases</th><th>Output</th><th>Pass/Fail</th>
             </tr>
             </thead>
-            <tr>
-            <td>x=1, y=2, z=3; </td><td> 2 </td>
-            <td>  <div class="btn-group" role="group" aria-label="...">
-                  <button type="button" class="btn btn-info" disabled>Pass</button>
-                  <button type="button" class="btn btn-warning">Fail </button></div></td>
-            </tr>
           </table>
           </form>
           </div>
@@ -231,7 +225,7 @@
     // Get selected funciton id/ Instrument source code
     var radio = $('input[name="function_id"]:checked').val();
     createTestFile(radio);
-    compile(radio);
+    compile(radio); // Compile, run, replay
 
     //$btn.button('reset');
   });

@@ -262,15 +262,7 @@ function createTestFile(id){
                     editor.setValue(json['content']);
                     editChanged = false;
 
-                    // Show result and move console
-                    if( $('#test-suite').is(":visible") ){
-                        $('#test-suite').hide("slow");
-                        $('#test-suite').show("slow");          
-                    }else{
-                        $('#test-suite').show("slow");    
-                    }
-                    showConsole(3);
-                }
+	        }
             }
             else{
                 // Display error message
@@ -302,6 +294,7 @@ function compile(id){
 
             if(json['success']){
                 writeToConsole(json['msg']);
+		writeToConsole("Running KLEE...");
 		runKLEE(fun_id);
                 //replayTestCases();
             }
@@ -329,6 +322,45 @@ function runKLEE(id){
 
 		if(json['success']){
 			writeToConsole(json['msg']);
+			writeToConsole("Replaying test cases...");
+			replayTestCases(id);			
+		}else{
+			writeToConsole(json['msg'],"danger");
+		}
+        },
+        error: function(xhRequest, ErrorText, thrownError)
+        {   
+            writeToConsole(xhRequest.status+": "+thrownError, 'danger');
+        }   
+    });
+}
+
+function replayTestCases(id){
+    var fun_id = id;
+    $.ajax({
+        url: 'server/replay.php',
+        type: "POST", 
+        data: {function_id: fun_id},
+        success: function(msg){
+
+		var json="";
+		eval('json='+msg+';');
+
+		if(json['success']){
+			writeToConsole(json['msg']);
+
+		    clearTestSuiteTable();
+		    drawTestSuiteTable( json['test_output']);
+
+		     // Show result and move console
+                    if( $('#test-suite').is(":visible") ){
+                        $('#test-suite').hide("slow");
+                        $('#test-suite').show("slow");          
+                    }else{
+                        $('#test-suite').show("slow");    
+                    }
+                    showConsole(3);
+
 		}else{
 			writeToConsole(json['msg'],"danger");
 		}
@@ -341,9 +373,39 @@ function runKLEE(id){
         }   
     });
 }
-function replayTestCases(){
 
+/*
+ * Function to draw/clear test suit table
+ * -------------------------------------------------
+ */
+function clearTestSuiteTable(){
+     $("#test-suite-table tbody tr").remove();
 }
+function drawTestSuiteTable(data) {
+    var rows = [];
+
+    for (var i = 0; i < data.length; i++) {
+        rows.push(drawTestSuiteRow(data[i]));
+    }
+
+    $("#test-suite-table").append(rows);
+}
+function drawTestSuiteRow(rowData) {
+    var row = $("<tr />");
+    var checked = "";
+    row.append($("<td>" + rowData.arg+ "</td>"));
+    row.append($("<td>"+rowData.output+"</td>"));
+/*
+row.append($(
+"<td><div class=\"btn-group\" data-toggel=\"buttons\" aria-label=\"...\"><button type=\"button\" class=\"btn btn-info\">Pass</button><button type=\"button\" class=\"btn btn-warning\">Fail</button></div></td>"
+));
+*/
+row.append($(
+"<td class=\"col-md-3\"><div class=\"btn-group\" data-toggle=\"buttons\"><label class=\"btn btn-primary active\"><input type=\"radio\" checked>Pass</label><label class=\"btn btn-primary\"><input type= \"radio\">Fail</lable></div></td>"));
+	
+    return row;
+}
+
 
 function showConsole(console_id){
     switch(console_id){
