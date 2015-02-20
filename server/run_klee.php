@@ -1,7 +1,7 @@
  <?php
  // Define KLEE
  define('KLEE_EXECUTABLE', "/home/qirong/Frog/frog_test/tools/KLEE_SOURCE_2015/klee/Release+Asserts/bin/klee "); 
- define('KLEE_OPTIONS' , "--allow-external-sym-calls "); 
+ define('KLEE_OPTIONS' , "--allow-external-sym-calls -max-time=10 "); 
 
 session_start();
 $res = array();
@@ -26,10 +26,10 @@ if(!isset($_SESSION['curr_file']))
             exec($cmd,$msg,$ret);
 	    if($ret==0){
 		$res['success'] = true;
-		$res['msg'] = "Run KLEE Succeed. ".json_encode($msg);	
+		$res['msg'] = "Run KLEE Succeed. ".implode("; ",array_slice($msg,1) );	
 	    }
 	    else{
-	    	$res['msg'] = "Error: run klee failed. ".json_encode($msg);
+	    	$res['msg'] = "Error: run klee failed. ".implode("; ", array_slice($msg,1) );
             }
 		
     }

@@ -219,7 +219,7 @@
     // Extract functions...
     extractFunctions();
 
-    $btn.button('reset')
+    $btn.button('reset');
   });
 
   /*
@@ -233,7 +233,7 @@
     createTestFile(radio);
     compile(radio);
 
-    $btn.button('reset');
+    //$btn.button('reset');
   });
 </script>
 

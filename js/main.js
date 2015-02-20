@@ -332,10 +332,12 @@ function runKLEE(id){
 		}else{
 			writeToConsole(json['msg'],"danger");
 		}
+		$('#generate-test-button').button('reset');
         },
         error: function(xhRequest, ErrorText, thrownError)
         {   
             writeToConsole(xhRequest.status+": "+thrownError, 'danger');
+	    $('#generate-test-button').button('reset');
         }   
     });
 }

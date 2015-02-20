@@ -40,11 +40,11 @@ if(!isset($_SESSION['curr_file']))
 
 	if($return==0){
 		$res['success'] = true;
-		$res['msg'] = "Compile succeed. \n".json_encode($msg);
+		$res['msg'] = "Compile succeed. \n".implode("; ",$msg);
 	}
 	else{
 		$res['success'] = false;
-		$res['msg'] = $cmd."Error: Compile failed. \n".json_encode($msg);
+		$res['msg'] = $cmd."Error: Compile failed. \n".implode("; ",$msg);
 	}	
      }   
 }
