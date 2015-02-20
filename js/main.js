@@ -85,7 +85,6 @@ $(document).ready(function() {
     // Show console at the top
     showConsole(1);
 
-
     // TEST: marker function of code mirror
     /*
     markerBug = editor.doc.markText({line:0,ch:0},{line:1,ch:1},{className:"bug"});
@@ -122,6 +121,34 @@ function extractFunctions(){
         }   
     });
 }
+
+/*
+ * Clear old KLEE data
+ * call compile if succed
+ * -------------------------------------------------
+ */
+function clearKLEEData(){
+    $.ajax({
+        url: 'server/clearKLEEData.php',
+        type: "POST",
+        success: function(msg){
+            var json="";
+            eval('json='+msg+';');
+            if(json['success']){
+		//writeToConsole(json['msg']);
+                //writeToConsole('Old KLEE Data Cleared','normal');
+            }else{
+	        writeToConsole(json['msg'],'warning');
+                writeToConsole('Unable to clear KLEE Data','warning');
+            }
+        },
+        error: function(xhRequest, ErrorText, thrownError)
+        {   
+            writeToConsole(xhRequest.status+": "+thrownError, 'danger');
+        }   
+    });
+}
+
 
 /*
  * Call Python Script to extract functions
@@ -163,6 +190,7 @@ function call_extract_function_script(){
 
 /*
  * To load source code
+ * ---------------------------------------------------------
  */
 function loadCodeEditor(){
     // Request for source code saved
@@ -235,6 +263,7 @@ function drawRow(rowData) {
 
 /*
  * Function to create test file based on selected function
+ * Call clearKLEEData if succed
  * ---------------------------------------------------------
  */
 function createTestFile(id){
@@ -260,8 +289,10 @@ function createTestFile(id){
 
                     // Display file content
                     editor.setValue(json['content']);
-                    editChanged = false;
+		    editChanged = false;
 
+		    // Clear old KLEE data
+		    clearKLEEData();
 	        }
             }
             else{
@@ -278,7 +309,8 @@ function createTestFile(id){
 }
 
 /*
- * Function to run test file based on selected function
+ * Function to compile test file based on selected function
+ * run KLEE if compile succeed
  * ---------------------------------------------------------
  */
 function compile(id){
@@ -310,6 +342,11 @@ function compile(id){
     });
 }
 
+/*
+ * Function to run KLEE based on selected function
+ * called after compile succeed
+ * ---------------------------------------------------------
+ */
 function runKLEE(id){
     var fun_id = id;
     $.ajax({
@@ -335,6 +372,10 @@ function runKLEE(id){
     });
 }
 
+/* 
+ * Function to replay test cases, called when run KLEE succeed
+ * ---------------------------------------------------------
+ */
 function replayTestCases(id){
     var fun_id = id;
     $.ajax({
@@ -395,18 +436,16 @@ function drawTestSuiteRow(rowData) {
     var checked = "";
     row.append($("<td>" + rowData.arg+ "</td>"));
     row.append($("<td>"+rowData.output+"</td>"));
-/*
-row.append($(
-"<td><div class=\"btn-group\" data-toggel=\"buttons\" aria-label=\"...\"><button type=\"button\" class=\"btn btn-info\">Pass</button><button type=\"button\" class=\"btn btn-warning\">Fail</button></div></td>"
-));
-*/
+
 row.append($(
 "<td class=\"col-md-3\"><div class=\"btn-group\" data-toggle=\"buttons\"><label class=\"btn btn-primary active\"><input type=\"radio\" checked>Pass</label><label class=\"btn btn-primary\"><input type= \"radio\">Fail</lable></div></td>"));
 	
     return row;
 }
 
-
+/* 
+ * Function to move console to position number
+ */
 function showConsole(console_id){
     switch(console_id){
         case 1:
