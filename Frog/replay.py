@@ -48,9 +48,23 @@ test_path = os.path.dirname(targetFile)
 # Check if file exists
 klee_dir = test_path+'/klee-last/';
 if not os.path.exists(klee_dir):
-	res['msg'] += testFileName+ "KLEE output does not exists. Exit.\n"
+	res['msg'] += "KLEE output does not exists. Exit.\n"
 	print json.dumps(res)
 	sys.exit()
+
+# Get function data from pickle
+if not os.path.isfile(targetFile+".pickle"):
+	res['msg'] += "Function data of test file does not exists. Exit.\n"
+	print json.dumps(res)
+	sys.exit()
+with open(targetFile+".pickle", "rb") as fb:
+	fdata = pickle.load(fb)
+	funcType = fdata.funcType
+	funcName = fdata.funcName
+	argType = fdata.argType
+	argName = fdata.argName
+	argIsPointer = fdata.argIsPointer
+	argSize = fdata.argSize
 
 ################################
 # 2 - Initialzation

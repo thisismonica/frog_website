@@ -5,6 +5,8 @@ import glob
 import os
 from support_frog import compute
 import json
+from function import Function
+import pickel
 
 #####################################################
 # extract_functions2.py
@@ -12,7 +14,7 @@ import json
 # usage: python extract_function2.py [file name]
 # output: res['msg'] and res['success'], res['content']
 # file output: filename+function_id+".test.c"
-#
+# function data output: filename_function_id+".test.c.pickle"
 #####################################################
 res = {}
 res['success'] = False
@@ -101,16 +103,6 @@ if len(kleeFunc) == 0:
 	print json.dumps(res)
 	sys.exit()
 
-'''
-res['success'] = True
-content = []
-for i,func in enumerate(kleeFunc):
-	d = {}
-	d['id'] = str(i);
-	d['function'] = func
-	content.append(d)
-res['content'] = content
-'''
 
 ########################################
 # 4 - Create test file for each function
@@ -202,6 +194,17 @@ for fid in range(len(kleeFunc)):
 				argName.append(argArr[-1].strip())
 
 	argSize = [ 1 for cnt in range(len(argType))]
+
+	# Store function data
+	fdata = Function()
+	fdata.funcType = funcType
+	fdata.funcName = funcName
+	fdata.argType = argType
+	fdata.argName = argName
+	fdata.argIsPointer = argIsPointer
+	fdata.argSize = argSize
+	with open(testFileName+".pickle",'wb') as fb:
+		pickle.dump(fdata, fb ,-1)
 
 	# Append Main Function
 	with open(testFileName, "ab") as f:
