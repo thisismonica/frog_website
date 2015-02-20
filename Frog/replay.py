@@ -143,11 +143,20 @@ with open(targetFile+"_coverage.txt",'w') as fout:
 							
 							# Display test cases
 							display = argName[ index ] + "="
+
+							# Special array: string
 							if argType[argcount] == 'char':
-								arg_array = "".join(arg_array)
+								arg_array_str = ""
+								for arg_char in arg_array:
+									if arg_char == '\x00':
+										break
+									arg_array_str += arg_char
+							#arg_array = "".join(arg_array)
+							arg_array = arg_array_str
+
 							if argcount != 0:
 								case['arg'] += ","
-							case['arg'] += " "+  display + str(arg_array)
+							case['arg'] += " "+  display + repr(arg_array)
 							
 							# Add test cases for replay
 							argval.append( str(arg_array) )
