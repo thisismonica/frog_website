@@ -29,6 +29,7 @@ if len(sys.argv) < 2:
 	sys.exit()	
 
 testFileName = sys.argv[1]
+testObjectName = re.sub("\.c$",".o", testFileName)
 
 # Check if file exists
 if not os.path.isfile(testFileName):
@@ -42,8 +43,6 @@ if not os.path.isfile(testFileName):
 
 # KLEE Related
 KLEE_INCLUDE= "/home/qirong/Frog/frog_test/tools/KLEE_SOURCE_2015/klee/include/klee"   # Path to include files, for llvm compilation
-
-################################
 # 6 - Compile to object file
 ################################
 
@@ -53,12 +52,13 @@ linkAddr.append(KLEE_INCLUDE)
 linkCmd = "llvm-gcc --emit-llvm -c -g"
 for addr in linkAddr:
 	linkCmd += " -I"+addr
+
+linkCmd += " -o "+testObjectName
 linkCmd += " "+testFileName
-linkCmd += " -o "+testFileObject
 
 # Delete old object
-if os.path.isfile(testFileObject):
-	subprocess.call("rm "+testFileObject,shell=True)
+if os.path.isfile(testObjectName):
+	subprocess.call("rm "+testObjectName,shell=True)
 
 # Compile
 proc = subprocess.Popen(linkCmd, shell=True, stdout=subprocess.PIPE)
@@ -67,6 +67,7 @@ res['msg'] += llvm_stdout if llvm_stdout else ""
 res['msg'] += llvm_stderr if llvm_stderr else ""
  
 if proc.returncode != 0:
+	res['msg'] += testFileName
 	res['msg'] += "Error: Compilation failed, please check syntax based on LLVM message\n"
 	print res
 	sys.exit() 
