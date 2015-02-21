@@ -28,15 +28,24 @@ if(!isset($_SESSION['curr_test_file']))
 		for($x=0; $x<$num; $x++){
 			$name = "testcase".$x;
 			$passorfail = $_POST[$name];
-			
-			$res['msg'] = $res['msg'].$passorfail; 
-
 			fwrite($output, $passorfail);
 			fwrite($output, "\n");
 		}
 		fclose($output);
-		$res['msg'] = "Store pass_fail info in file succeed.";
-		$res['success'] = true;
+		$res['msg'] = "Pass or Fail data saved.";
+
+		// Run tarantula
+		$cmd = "python ../Frog/tarantula.py ".$testfile;
+		$msg = shell_exec( $cmd );
+		$msg_json = json_decode( $msg , true);
+
+		if($msg_json['success']){ 
+			$res['msg'] = $res['msg']." Run Tanrantula succeed.";
+			$res['success'] = true;
+			$res['suspiciousness'] = $msg_json['suspiciousness'];
+		}else{
+			$res['msg'] = $res['msg'].$msg_json['msg'];			
+		}
 	}
 
  }

@@ -2,6 +2,7 @@ import sys
 import json
 import os
 from support_frog import compute
+import pickle
 
 ############################################################################
 # tarantula.py 
@@ -45,16 +46,16 @@ M = []
 with open(cov_file, 'rb') as f:
 	while True:
 		try:
-			M.append(pickl.load(f))
+			M.append(pickle.load(f))
 		except EOFError:
 			break
 
 F = []
 with open(pf_file, 'r') as f:
 	for line in f.readlines():
-		if line == "True":
+		if line.strip() == "True":
 			F.append(True)
-		elif line == "False":
+		elif line.strip() == "False":
 			F.append(False)
 		else:
 			res['msg'] += "Invalid file format of "+pf_file
@@ -74,5 +75,6 @@ L = [True]*testNum
 stmtNum = len(M[0])
 C = [True]*stmtNum
 
-suspiciousness = compute(M,F,L,C)
-
+res['suspiciousness'] = compute(M,F,L,C)
+res['success'] = True
+print json.dumps(res)

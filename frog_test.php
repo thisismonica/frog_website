@@ -248,8 +248,8 @@
               //data: return data from server
               var json="";
               eval('json='+msg+';');
+alert(msg);
               if(json['success']){
-                writeToConsole("Test Cases pass/fail info input succeeed.");
 		writeToConsole(json['msg']);
               }else{
                 writeToConsole("TestCase pass/fail info input failed.", "warning");
