@@ -95,7 +95,7 @@ M = []
 '''
 test_output = [] #Test cases string array to display
 
-with open(targetFile+"_coverage.txt",'w') as fout:
+with open(targetFile+"_coverage.pickle",'wb') as fout:
 	testnum = 0
 	for test in tests[:MAX_TESTS]:
 
@@ -289,7 +289,8 @@ with open(targetFile+"_coverage.txt",'w') as fout:
 					lineCoverage.append(True)
 		
 		test_output.append(case)			
-		fout.write(str(lineCoverage) +"\n")
+		#fout.write(str(lineCoverage) +"\n")
+		pickle.dump(lineCoverage, fout, -1)
 
 res['test_output'] = test_output 
 res['test_num'] = len(test_output)

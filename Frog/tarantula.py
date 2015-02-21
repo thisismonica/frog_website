@@ -1,3 +1,8 @@
+import sys
+import json
+import os
+from support_frog import compute
+
 ############################################################################
 # tarantula.py 
 # version 1.0: run tarantula based on F/M 
@@ -10,9 +15,54 @@
 res = {}
 res['success'] = False
 res['msg'] = ""
-res['test_output'] = ""
+res['suspiciousness'] = ""
+
 ################################
-# 9 - Running tarantula
+# 1 - Parse argument
+################################
+
+if len(sys.argv) < 2:
+	res['msg'] += "Missing argument. Exit.\n"
+	print res
+	sys.exit(1)	
+
+testFileName= sys.argv[1]
+
+# Check if file exists
+if not os.path.isfile(testFileName):
+	res['msg'] += testFileName+ "File does not exist. Exit.\n"
+	print res
+	sys.exit(1)
+
+
+######################################
+# 2 - Construct F/M matrix from file
+#####################################
+cov_file = testFileName+"_coverage.pickle"
+pf_file = testFileName+"_passorfail.txt"
+
+M = []
+with open(cov_file, 'rb') as f:
+	while True:
+		try:
+			M.append(pickl.load(f))
+		except EOFError:
+			break
+
+F = []
+with open(pf_file, 'r') as f:
+	for line in f.readlines():
+		if line == "True":
+			F.append(True)
+		elif line == "False":
+			F.append(False)
+		else:
+			res['msg'] += "Invalid file format of "+pf_file
+			print res
+			sys.exit(1)
+
+################################
+# 3 - Running tarantula
 ################################
 
 
@@ -26,4 +76,3 @@ C = [True]*stmtNum
 
 suspiciousness = compute(M,F,L,C)
 
-print suspiciousness

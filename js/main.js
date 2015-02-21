@@ -98,7 +98,6 @@ $(document).ready(function() {
 /*
  * Called when button 'extract funciton' clicked. 
  * Save & Extract functions from source code
- * Call clearKLEEData() if succeed
  * -------------------------------------------------
  */
 function extractFunctions(){
@@ -129,34 +128,6 @@ function extractFunctions(){
         }   
     });
 }
-
-/*
- * Clear old KLEE data
- * Called after extract funtion succeed.
- * -------------------------------------------------
- */
-function clearKLEEData(){
-    $.ajax({
-        url: 'server/clearKLEEData.php',
-        type: "POST",
-        success: function(msg){
-            var json="";
-            eval('json='+msg+';');
-            if(json['success']){
-		//writeToConsole(json['msg']);
-                //writeToConsole('Old KLEE Data Cleared','normal');
-            }else{
-	        writeToConsole(json['msg'],'warning');
-                writeToConsole('Unable to clear KLEE Data','warning');
-            }
-        },
-        error: function(xhRequest, ErrorText, thrownError)
-        {   
-            writeToConsole(xhRequest.status+": "+thrownError, 'danger');
-        }   
-    });
-}
-
 
 /*
  * Call Python Script to extract functions
@@ -459,3 +430,30 @@ row.append($(
 	
     return row;
 }
+
+/*
+ * Clear old KLEE data
+ * -------------------------------------------------
+ */
+function clearKLEEData(){
+    $.ajax({
+        url: 'server/clearKLEEData.php',
+        type: "POST",
+        success: function(msg){
+            var json="";
+            eval('json='+msg+';');
+            if(json['success']){
+        //writeToConsole(json['msg']);
+                //writeToConsole('Old KLEE Data Cleared','normal');
+            }else{
+            writeToConsole(json['msg'],'warning');
+                writeToConsole('Unable to clear KLEE Data','warning');
+            }
+        },
+        error: function(xhRequest, ErrorText, thrownError)
+        {   
+            writeToConsole(xhRequest.status+": "+thrownError, 'danger');
+        }   
+    });
+}
+
