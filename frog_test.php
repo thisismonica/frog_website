@@ -169,7 +169,7 @@
       <div  class="panel panel-primary" >
           <div class="panel-heading">Test Suite Result</div>
           <div class="panel-body">
-          <form id="test-suite-form">
+          <form action="server/read_passfail.php" method="post" id="test-suite-form">
           <table class="table", id="test-suite-table">
             <thead>
             <tr>
@@ -177,6 +177,7 @@
             </tr>
             </thead>
           </table>
+          <label class="btn btn-success"><input type="submit">Frog Bugs!</label>
           </form>
           </div>
           </div>
@@ -229,6 +230,42 @@
 
     //$btn.button('reset');
   });
+
+  /*
+   * Ajax submit of form
+   */
+  $("#test-suite-form").submit(function(e)
+  {
+      var postData = $(this).serializeArray();
+      var formURL = $(this).attr("action");
+      $.ajax(
+      {
+          url : formURL,
+          type: "POST",
+          data : postData,
+          success:function(msg, textStatus, jqXHR) 
+          {
+              //data: return data from server
+              var json="";
+              eval('json='+msg+';');
+              if(json['success']){
+                writeToConsole("Test Cases pass/fail info input succeeed.");
+              }else{
+                writeToConsole("TestCase pass/fail info input failed.", "warning");
+                writeToConsole(json['msg'], 'warning');
+              }
+          },
+          error: function(jqXHR, textStatus, errorThrown) 
+          {
+              //if fails 
+              writeToConsole(jqXHR.status+": "+errorThrown, 'danger');     
+          }
+      });
+      e.preventDefault(); //STOP default action
+      e.unbind(); //unbind. to stop multiple form submit.
+  });
+
+
 </script>
 
 </body>

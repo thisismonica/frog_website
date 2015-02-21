@@ -407,10 +407,11 @@ function replayTestCases(id){
 		}
 		$('#generate-test-button').button('reset');
         },
+
         error: function(xhRequest, ErrorText, thrownError)
         {   
             writeToConsole(xhRequest.status+": "+thrownError, 'danger');
-	    $('#generate-test-button').button('reset');
+	        $('#generate-test-button').button('reset');
         }   
     });
 }
@@ -426,43 +427,23 @@ function drawTestSuiteTable(data) {
     var rows = [];
 
     for (var i = 0; i < data.length; i++) {
-        rows.push(drawTestSuiteRow(data[i]));
+        rows.push(drawTestSuiteRow(data[i], i));
     }
 
     $("#test-suite-table").append(rows);
 }
-function drawTestSuiteRow(rowData) {
+function drawTestSuiteRow(rowData, rowid) {
+    var id = rowid.toString();
+    var test_str = "testcase";
+    id = test_str.concat(id);
+    
     var row = $("<tr />");
     var checked = "";
     row.append($("<td>" + rowData.arg+ "</td>"));
     row.append($("<td>"+rowData.output+"</td>"));
 
 row.append($(
-"<td class=\"col-md-3\"><div class=\"btn-group\" data-toggle=\"buttons\"><label class=\"btn btn-primary active\"><input type=\"radio\" checked>Pass</label><label class=\"btn btn-primary\"><input type= \"radio\">Fail</lable></div></td>"));
+"<td class=\"col-md-3\"><div class=\"btn-group\" data-toggle=\"buttons\"><label class=\"btn btn-primary active\"><input type=\"radio\" name="+id+ " value=\"True\" checked>Pass</label><label class=\"btn btn-primary\"><input type= \"radio\" name="+id+" value=\"False\">Fail</lable></div></td>"));
 	
     return row;
-}
-
-/* 
- * Function to move console to position number
- */
-function showConsole(console_id){
-    switch(console_id){
-        case 1:
-            $('#console-div1').show();
-            $('#console-div2').hide();
-            $('#console-div3').hide();
-        break;
-        case 2:
-            $('#console-div1').hide();
-            $('#console-div2').show();
-            $('#console-div3').hide();
-        break;
-        case 3:
-            $('#console-div1').hide();
-            $('#console-div2').hide();
-            $('#console-div3').show();
-        break;
-        default:
-    }
 }

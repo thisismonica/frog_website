@@ -22,6 +22,10 @@ if(!isset($_SESSION['curr_file']))
 	$command = escapeshellcmd('python ../Frog/replay.py ');
 	$result = shell_exec($command.$target_path);
 	$res = $result;
+
+	// Get test cases number
+	if($res['success'])
+		$_SESSION['test_num'] = $res['test_num'];
 }
 echo $res;
 ?>

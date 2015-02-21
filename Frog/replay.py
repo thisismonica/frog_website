@@ -292,6 +292,7 @@ with open(targetFile+"_coverage.txt",'w') as fout:
 		fout.write(str(lineCoverage) +"\n")
 
 res['test_output'] = test_output 
+res['test_num'] = len(test_output)
 res['msg'] = "Replay Succeed."
 res['success'] = True
 print json.dumps(res)

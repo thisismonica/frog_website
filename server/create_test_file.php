@@ -9,6 +9,7 @@ if(!isset($_SESSION['curr_file']))
 }else{
     // Test files names
     $target_path = $_SESSION['curr_file'].$_POST['function_id'].".test.c";
+    $_SESSION['curr_test_file'] = $target_path;
 
     // Test file not generated
     if( !file_exists($target_path) ){
