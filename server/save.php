@@ -27,6 +27,7 @@ if(!isset( $_SESSION['curr_file'] ) || !file_exists($_SESSION['curr_file']))
 */
 $filepath = $_SESSION['curr_file'];
 $arr = array();
+
 // Check if file exists
 if(file_exists($filepath))
 {

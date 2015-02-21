@@ -34,8 +34,8 @@
   <script src="plugins/jquery-upload-file-master/js/jquery.uploadfile.min.js"></script>
 
   <!-- Self-Built Script -->
-  <script src="js/main.js"></script>
   <script src="js/utils.js"></script>
+  <script src="js/main.js"></script>
 
   <!-- Self-Built Style -->
   <style>
@@ -250,6 +250,7 @@
               eval('json='+msg+';');
               if(json['success']){
                 writeToConsole("Test Cases pass/fail info input succeeed.");
+		writeToConsole(json['msg']);
               }else{
                 writeToConsole("TestCase pass/fail info input failed.", "warning");
                 writeToConsole(json['msg'], 'warning');
@@ -262,7 +263,7 @@
           }
       });
       e.preventDefault(); //STOP default action
-      e.unbind(); //unbind. to stop multiple form submit.
+      //e.unbind(); //unbind. to stop multiple form submit.
   });
 
 

@@ -75,6 +75,8 @@ $(document).ready(function() {
         theme: "elegant",
         mode: "text/x-csrc"
     });
+   
+    // Load code editor from saved user data
     loadCodeEditor();
 
     // Fire when editor content changed
@@ -94,7 +96,9 @@ $(document).ready(function() {
 });
 
 /*
+ * Called when button 'extract funciton' clicked. 
  * Save & Extract functions from source code
+ * Call clearKLEEData() if succeed
  * -------------------------------------------------
  */
 function extractFunctions(){
@@ -111,6 +115,10 @@ function extractFunctions(){
             if(json['success']){
                 writeToConsole('Source code saved','normal');
                 call_extract_function_script();
+
+	        // Clear old KLEE data
+	        clearKLEEData();
+
             }else{
                 writeToConsole('Unable to save source code','warning');
             }
@@ -124,7 +132,7 @@ function extractFunctions(){
 
 /*
  * Clear old KLEE data
- * call compile if succed
+ * Called after extract funtion succeed.
  * -------------------------------------------------
  */
 function clearKLEEData(){
@@ -152,6 +160,7 @@ function clearKLEEData(){
 
 /*
  * Call Python Script to extract functions
+ * Called after source code saved
  * -------------------------------------------------
  */
 function call_extract_function_script(){
@@ -190,6 +199,7 @@ function call_extract_function_script(){
 
 /*
  * To load source code
+ * called onDocumentReady()
  * ---------------------------------------------------------
  */
 function loadCodeEditor(){
@@ -235,6 +245,7 @@ function loadCodeEditor(){
 
 /*
  * Function to draw/clear function list table
+ * Called by extract functions
  * -------------------------------------------------
  */
 function clearTable(){
@@ -263,7 +274,7 @@ function drawRow(rowData) {
 
 /*
  * Function to create test file based on selected function
- * Call clearKLEEData if succed
+ * Called when button 'generate test suite' clicked
  * ---------------------------------------------------------
  */
 function createTestFile(id){
@@ -291,8 +302,6 @@ function createTestFile(id){
                     editor.setValue(json['content']);
 		    editChanged = false;
 
-		    // Clear old KLEE data
-		    clearKLEEData();
 	        }
             }
             else{
@@ -388,7 +397,7 @@ function replayTestCases(id){
 		eval('json='+msg+';');
 
 		if(json['success']){
-			writeToConsole(json['msg']);
+		    writeToConsole(json['msg']);
 
 		    clearTestSuiteTable();
 		    drawTestSuiteTable( json['test_output']);
@@ -418,11 +427,13 @@ function replayTestCases(id){
 
 /*
  * Function to draw/clear test suit table
+ * called after repaly succeed
  * -------------------------------------------------
  */
 function clearTestSuiteTable(){
      $("#test-suite-table tbody tr").remove();
 }
+
 function drawTestSuiteTable(data) {
     var rows = [];
 
@@ -432,6 +443,7 @@ function drawTestSuiteTable(data) {
 
     $("#test-suite-table").append(rows);
 }
+
 function drawTestSuiteRow(rowData, rowid) {
     var id = rowid.toString();
     var test_str = "testcase";

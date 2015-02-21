@@ -24,8 +24,9 @@ if(!isset($_SESSION['curr_file']))
 	$res = $result;
 
 	// Get test cases number
-	if($res['success'])
-		$_SESSION['test_num'] = $res['test_num'];
+	$json = json_decode($res,true);
+	if($json['success'])
+		$_SESSION['test_num'] = $json['test_num'];
 }
 echo $res;
 ?>

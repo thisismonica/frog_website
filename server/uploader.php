@@ -10,6 +10,11 @@ if ( !file_exists($target_path) ) {
  // Upload files
 if(isset($_FILES["source_code"]))
 {
+        
+        // Clear previous data
+        $clear = "rm -r ".$target_path." 2>/dev/null";
+	exec($clear);
+
 	$ret = array();
 
 	$error =$_FILES["source_code"]["error"];
