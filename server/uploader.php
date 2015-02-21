@@ -12,7 +12,7 @@ if(isset($_FILES["source_code"]))
 {
         
         // Clear previous data
-        $clear = "rm -r ".$target_path." 2>/dev/null";
+        $clear = "rm -r ".$target_path."/* 2>/dev/null";
 	exec($clear);
 
 	$ret = array();

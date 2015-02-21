@@ -169,18 +169,19 @@
       <div  class="panel panel-primary" >
           <div class="panel-heading">Test Suite Result</div>
           <div class="panel-body">
-          <form action="server/read_passfail.php" method="post" id="test-suite-form">
-          <table class="table", id="test-suite-table">
-            <thead>
-            <tr>
-              <th>Test Cases</th><th>Output</th><th>Pass/Fail</th>
-            </tr>
-            </thead>
-          </table>
-          <label class="btn btn-success"><input type="submit">Frog Bugs!</label>
-          </form>
+              <form action="server/read_passfail.php" method="post" id="test-suite-form">
+              <table class="table", id="test-suite-table">
+              <thead>
+              <tr>
+                  <th>Test Cases</th><th>Output</th><th>Pass/Fail</th>
+              </tr>
+              </thead>
+              </table>
           </div>
-          </div>
+      </div>
+	
+	<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Frog Bugs!</button>
+	  </form>
     </div>
     <!-- Console3 -->
       <div hidden class="col-md-4" id="console-div3">
@@ -249,8 +250,12 @@
               var json="";
               eval('json='+msg+';');
 alert(msg);
+
               if(json['success']){
 		writeToConsole(json['msg']);
+		
+		// Tarantula results: json['suspiciousness']
+			
               }else{
                 writeToConsole("TestCase pass/fail info input failed.", "warning");
                 writeToConsole(json['msg'], 'warning');
