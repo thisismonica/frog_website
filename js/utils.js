@@ -50,18 +50,21 @@ function showConsole(console_id){
     switch(console_id){
         case 1:
             $('#console-div1').show();
+	    $('#console1').height(330);
             $('#console-div2').hide();
             $('#console-div3').hide();
         break;
         case 2:
             $('#console-div1').hide();
             $('#console-div2').show();
+	    $('#console2').height(100);
             $('#console-div3').hide();
         break;
         case 3:
             $('#console-div1').hide();
             $('#console-div2').hide();
             $('#console-div3').show();
+	    $('#console3').height(300);
         break;
         default:
     }

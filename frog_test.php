@@ -73,16 +73,42 @@
 
 <!-- Header -->
 <a name="step1"/>
+<div class="container">
 <div class="page-header">
-  <h2 class="text-center">Frog Bug Finder <small>Testing Panel</small></h2>
+  <h2 class="text-center">Frog Bug Finder <small>Testing panel</small></h2><div align="right"><button type="button" class="btn btn-success" data-toggle="modal" data-target="#example-modal">Show Example</button></div> 
 </div>
-
+</div>
 <!-- Instructions -->
 <div hidden class="row">
   <div class="col-md-12"> <div class="bg-warning">
 			<p class="text-center text-warning"><strong>Instructions</strong>: Start with uploading/pasting source code! (Language support: c/c++)</p>
   </div></div>
 </div>
+
+<!-- Modal for example select -->
+<div class="modal fade" id="example-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Selece Example Source Code</h4>
+      </div>
+      <div class="modal-body">
+	<ul class="list-group">
+	  <a onclick="showExample(this.id)" id ="mid_bug.c" data-dismiss="modal" class="list-group-item list-group-item-success"><strong>mid_bug.c</strong>: bugged code with integer data type</a>
+	  <a onclick="showExample(this.id)" id="mid_unsigned_int.c"  data-dismiss="modal" class="list-group-item list-group-item-success"><strong>mid_unsigned_int.c</strong>: bugged code with unsigned data type</a>
+	  <a onclick="showExample(this.id)" id ="regex_bug.c" class="list-group-item list-group-item-info" data-dismiss="modal" ><strong>regex_bug.c</strong>: bugged code with string data type</a>
+	  <a onclick="showExample(this.id)" id ="regex.c" class="list-group-item list-group-item-info" data-dismiss="modal" ><strong>regex.c</strong>: correct code with string data type</a>
+	  <a onclick="showExample(this.id)" id ="leap_bug.c" class="list-group-item list-group-item-warning" data-dismiss="modal" ><strong>leap_bug.c</strong>: bugged code as edge cases </a>
+	</ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End of Modal for example select -->
 
 <!-- ===========================================Testing Panel Body====================================================-->
 <div class="container">
@@ -95,6 +121,7 @@
       <div class="panel panel-success">
         <div class="panel-heading">Source Code Editor</div>
         <div class="panel-heading" id="file-uploader"><span class="glyphicon glyphicon-import" aria-hidden="true"></span>&nbsp Import Code</div>
+	<div class="panne-heading"></div>
         <div class="panel-body">
         <form >
           <textarea id="code" name="code"></textarea>

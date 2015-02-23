@@ -52,6 +52,11 @@ $(document).ready(function() {
                     $("#extract-functions").show("slow");
                     window.location.href = "#step2";
                     showConsole(1);
+
+			// Hide result panel
+			$('#function-list').hide();
+			$('#test-suite').hide();
+
                 }
             }
             else{
@@ -79,8 +84,6 @@ $(document).ready(function() {
 
     // Show console at the top
     showConsole(1);
-
-   
 });
 
 /*
@@ -157,7 +160,7 @@ function call_extract_function_script(){
 }
 
 /*
- * To load source code
+ * To load source code from current test file
  * called onDocumentReady()
  * ---------------------------------------------------------
  */
@@ -201,7 +204,6 @@ function loadCodeEditor(){
             writeToConsole(xhRequest.status+": "+thrownError, 'danger');
         }   
     });
-
 }
 
 /*
@@ -478,3 +480,37 @@ function showBug(suspiciousness) {
 
 }
 
+/* 
+ * Function to show example source code
+ *-----------------------------------------------
+ */
+function showExample(src){
+    writeToConsole(src);
+    showConsole(1);
+    $.ajax({
+        url: 'server/show_example.php',
+        type: "POST", 
+        data: {filename: src},
+        success: function(msg){
+		var json="";
+		eval('json='+msg+';');
+
+		if(json['success']){
+			writeToConsole(json['msg']);
+
+			// Load example file to code editor
+			loadCodeEditor();
+			
+			// Hide result panel
+			$('#function-list').hide();
+			$('#test-suite').hide();
+		}else{
+			writeToConsole(json['msg'],"danger");
+		}
+        },
+        error: function(xhRequest, ErrorText, thrownError)
+        {   
+            writeToConsole(xhRequest.status+": "+thrownError, 'danger');
+        }   
+    });
+}

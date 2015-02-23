@@ -152,7 +152,7 @@ with open(targetFile+"_coverage.pickle",'wb') as fout:
 										break
 									arg_array_str += arg_char
 							#arg_array = "".join(arg_array)
-							arg_array = arg_array_str
+								arg_array = arg_array_str
 
 							if argcount != 0:
 								case['arg'] += ","
