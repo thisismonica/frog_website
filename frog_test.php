@@ -249,12 +249,13 @@
               //data: return data from server
               var json="";
               eval('json='+msg+';');
-alert(msg);
 
               if(json['success']){
 		writeToConsole(json['msg']);
 		
 		// Tarantula results: json['suspiciousness']
+		// Call showBug to mark source code
+		showBug(json['suspiciousness']);
 			
               }else{
                 writeToConsole("TestCase pass/fail info input failed.", "warning");

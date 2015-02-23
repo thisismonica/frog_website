@@ -7,6 +7,52 @@
     background-color:#B18904;
     color:#FFFFFF;
 }
+/* Marker for bug visualization */
+.marker_10{
+	background-color:#FF3300 ;
+	color:#FFFFFF;
+}
+.marker_09{
+	background-color: #FF6600;
+	color:#FFFFFF;
+}
+.marker_08{
+	background-color: #FF9900;
+	color: #FFFFFF;
+}
+.marker_07{
+	background-color: #FFCC00;
+	color: #000000;
+}
+.marker_06{
+	background-color: #FFFF00;
+	color: #000000;
+}
+.marker_05{
+	background-color:#FFFF66;
+	color:#000000;
+}
+.marker_04{
+	background-color: #99FFFF;
+	color:#000000;
+}
+.marker_03{
+	background-color: #99FFCC;
+	color:#000000;
+}
+.marker_02{
+	background-color: #99FF99;
+	color:#000000;
+}
+.marker_01{
+	background-color: #99FF66;
+	color:#000000;
+}
+.marker_00{
+	background-color: #99FF33;
+	color:#000000;
+}
+
 /* BASICS */
 
 .CodeMirror {

@@ -3,10 +3,8 @@
  * -------------------------------------------------
  */
 var editor; // Code mirror object
-var editChanged = false; // Flag indicating change of content in the code editor
-var currentProj = ''; // Current project name
-var isRunning = true; // Indicate if there is a program running
-var allowedSourceCode = "c,cpp"; //Allowed source code type for testing
+var allowedSourceCode = "c"; //Allowed source code type for testing
+var markers = []; //TextMarker array to show bugs
 
 /*
  * Document ready
@@ -79,20 +77,10 @@ $(document).ready(function() {
     // Load code editor from saved user data
     loadCodeEditor();
 
-    // Fire when editor content changed
-    editor.on("change",function(cm){
-        editChanged = true;
-    });
-
     // Show console at the top
     showConsole(1);
 
-    // TEST: marker function of code mirror
-    /*
-    markerBug = editor.doc.markText({line:0,ch:0},{line:1,ch:1},{className:"bug"});
-    markerWarning = editor.doc.markText({line:4,ch:0},{line:5,ch:0},{className:"warning"});
-    */
-    
+   
 });
 
 /*
@@ -195,6 +183,8 @@ function loadCodeEditor(){
                     // Display file content
                     editor.setValue(json['content']);
                     editChanged = false;
+
+		    
                 }
             }
             else{
@@ -426,7 +416,7 @@ function drawTestSuiteRow(rowData, rowid) {
     row.append($("<td>"+rowData.output+"</td>"));
 
 row.append($(
-"<td class=\"col-md-3\"><div class=\"btn-group\" data-toggle=\"buttons\"><label class=\"btn btn-primary active\"><input type=\"radio\" name="+id+ " value=\"True\" checked>Pass</label><label class=\"btn btn-primary\"><input type= \"radio\" name="+id+" value=\"False\">Fail</lable></div></td>"));
+"<td class=\"col-md-3\"><div class=\"btn-group\" data-toggle=\"buttons\"><label class=\"btn btn-primary active\"><input type=\"radio\" name="+id+ " value=\"False\" checked>Pass</label><label class=\"btn btn-primary\"><input type= \"radio\" name="+id+" value=\"True\">Fail</lable></div></td>"));
 	
     return row;
 }
@@ -455,5 +445,34 @@ function clearKLEEData(){
             writeToConsole(xhRequest.status+": "+thrownError, 'danger');
         }   
     });
+}
+
+/*
+ * Called after read pass/fail data( click 'Frog Bug!' button )
+ * Function to mark source code according to suspiciousness
+ * ---------------------------------------------------------------
+ */
+function showBug(suspiciousness) {
+	window.location.href = "#step2";
+        showConsole(1);
+	var index;
+	var marker_level;
+	var marker_text;
+	var marker;
+	for(index=0; index< suspiciousness.length; index++){
+		if(suspiciousness[index]>=0){
+			marker_level = Math.round( suspiciousness[index]*10 );
+			if(marker_level==10)
+				marker_text = "marker_".concat(marker_level.toString() );
+			else
+				marker_text = "marker_0".concat(marker_level.toString() );
+			marker = editor.doc.markText({line:index,ch:0},{line:index+1,ch:0},{className:marker_text});
+			markers.push( marker );	
+		}
+		//markers.push( suspiciousness[index] );
+	}
+	$('#code-area').hide();
+	$('#code-area').show("slow");
+
 }
 
