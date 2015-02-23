@@ -477,7 +477,6 @@ function showBug(suspiciousness) {
 	}
 	$('#code-area').hide();
 	$('#code-area').show("slow");
-
 }
 
 /* 

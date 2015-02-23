@@ -26,7 +26,13 @@ if(!isset($_SESSION['curr_file']))
             exec($cmd,$msg,$ret);
 	    if($ret==0){
 		$res['success'] = true;
-		$res['msg'] = "Run KLEE Succeed. ".implode("; ",array_slice($msg,1) );	
+		//$res['msg'] = "Run KLEE Succeed. ".implode("; ",array_slice($msg,1) );	
+	
+		// Read from KLEE info instead of stdout
+		$klee_dir = dirname( $_SESSION['curr_file'] );
+		$info = file( 	$klee_dir."/klee-last/info" );
+		$res['msg']  = "Run KLEE Succeed. ".implode("; ",array_slice($info,-3,3));
+		
 	    }
 	    else{
 	    	$res['msg'] = "Error: run klee failed. ".implode("; ", array_slice($msg,1) );

@@ -57,4 +57,3 @@ void bubble_srt( int a[])
         printf("%d ",a[i]);
     printf("\n");
 }
-
