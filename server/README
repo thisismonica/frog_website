@@ -1,0 +1,8 @@
+Server PHP file list
+************************************
+1. User login/register: login.php, signup.php
+2. Upload file: uploader.php
+3. Save from editor/ extract functions: save.php, extract_functions.php
+4. Create test file based on function selected: create_test_file.php
+5. Compile, run and replay test cases: compile.php, run-klee.php, replay.php
+6. Read user input to show bugs: read_passfail.php

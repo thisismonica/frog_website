@@ -104,7 +104,7 @@ function extractFunctions(){
                 call_extract_function_script();
 
 	        // Clear old KLEE data
-	        clearKLEEData();
+	        //clearKLEEData();
 
             }else{
                 writeToConsole('Unable to save source code','warning');
@@ -425,6 +425,7 @@ row.append($(
  * Clear old KLEE data
  * -------------------------------------------------
  */
+/*
 function clearKLEEData(){
     $.ajax({
         url: 'server/clearKLEEData.php',
@@ -446,6 +447,7 @@ function clearKLEEData(){
         }   
     });
 }
+*/
 
 /*
  * Called after read pass/fail data( click 'Frog Bug!' button )

@@ -1,0 +1,8 @@
+Frog backend Python file list
+*********************************
+1. class definitions: function.ph
+2. support functions: support_frog.py
+3. extract_functions2.py: called by extract_functions.php
+4. replay.py: replay test cases called by replay.php
+5. tarantula.py: calculate suspiciousness, called by read_passfail.php
+
