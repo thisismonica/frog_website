@@ -6,7 +6,7 @@ int mid( int x, int y, int z )
         if(x<y)
             m=y;
         else if(x<z)
-            m=y;
+            m=y;  //Bug
     }
     else{
         if(x>y)

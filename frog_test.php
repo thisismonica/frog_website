@@ -99,8 +99,9 @@
 	  <a onclick="showExample(this.id)" id="mid_unsigned_int.c"  data-dismiss="modal" class="list-group-item list-group-item-success"><strong>mid_unsigned_int.c</strong>: bugged code with unsigned data type</a>
 	  <a onclick="showExample(this.id)" id ="regex_bug.c" class="list-group-item list-group-item-info" data-dismiss="modal" ><strong>regex_bug.c</strong>: bugged code with string data type</a>
 	  <a onclick="showExample(this.id)" id ="regex.c" class="list-group-item list-group-item-info" data-dismiss="modal" ><strong>regex.c</strong>: correct code with string data type</a>
-	  <a onclick="showExample(this.id)" id ="leap_bug.c" class="list-group-item list-group-item-warning" data-dismiss="modal" ><strong>leap_bug.c</strong>: bugged code as edge cases </a>
-	  <a onclick="showExample(this.id)" id ="bubble_sort_printf.c" class="list-group-item list-group-item-warning" data-dismiss="modal" ><strong>bubble_sort_printf.c</strong>: correct code to sort integer array</a>
+	  <a onclick="showExample(this.id)" id ="leap_bug.c" class="list-group-item list-group-item-warning" data-dismiss="modal" ><strong>leap_bug.c</strong>: bugged code </a>
+	  <a onclick="showExample(this.id)" id ="leap.c" class="list-group-item list-group-item-warning" data-dismiss="modal" ><strong>leap.c</strong>: correct code </a>
+	  <a onclick="showExample(this.id)" id ="bubble_sort_printf.c" class="list-group-item list-group-item-success" data-dismiss="modal" ><strong>bubble_sort_printf.c</strong>: correct code to sort integer array</a>
 	</ul>
       </div>
       <div class="modal-footer">

@@ -31,7 +31,9 @@ if(!isset($_SESSION['curr_file']))
 		// Read from KLEE info instead of stdout
 		$klee_dir = dirname( $_SESSION['curr_file'] );
 		$info = file( 	$klee_dir."/klee-last/info" );
+		$error_msg = file( $klee_dir."/klee-last/messages.txt");
 		$res['msg']  = "Run KLEE Succeed. ".implode("; ",array_slice($info,-3,3));
+		$res['msg'] = $res['msg'].implode("; ",$error_msg) ;
 		
 	    }
 	    else{
