@@ -5,5 +5,5 @@
 int memory(int size)
 {
    int *pointer = &size;
-   printf("The result if %d", *(pointer++)); // Memory error
+   printf("The result if %d", *(++pointer) );// Memory error
 }

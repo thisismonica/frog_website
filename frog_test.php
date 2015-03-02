@@ -102,6 +102,10 @@
 	  <a onclick="showExample(this.id)" id ="leap_bug.c" class="list-group-item list-group-item-warning" data-dismiss="modal" ><strong>leap_bug.c</strong>: bugged code </a>
 	  <a onclick="showExample(this.id)" id ="leap.c" class="list-group-item list-group-item-warning" data-dismiss="modal" ><strong>leap.c</strong>: correct code </a>
 	  <a onclick="showExample(this.id)" id ="bubble_sort_printf.c" class="list-group-item list-group-item-success" data-dismiss="modal" ><strong>bubble_sort_printf.c</strong>: correct code to sort integer array</a>
+
+	  <a onclick="showExample(this.id)" id ="divide.c" class="list-group-item list-group-item-danger" data-dismiss="modal" ><strong>divide.c</strong>: Arithmetic faults</a>
+	  <a onclick="showExample(this.id)" id ="memory.c" class="list-group-item list-group-item-danger" data-dismiss="modal" ><strong>memory.c</strong>: Memory Errors</a>
+	  <a onclick="showExample(this.id)" id ="odd_or_even.c" class="list-group-item list-group-item-danger" data-dismiss="modal" ><strong>odd_or_even.c</strong>: Syntax Errors</a>
 	</ul>
       </div>
       <div class="modal-footer">
