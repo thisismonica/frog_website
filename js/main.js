@@ -11,6 +11,7 @@ var markers = []; //TextMarker array to show bugs
  * -------------------------------------------------
  */
 $(document).ready(function() {
+	
 
     // Initialize file uploader
     $("#file-uploader").uploadFile({

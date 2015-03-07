@@ -1,7 +1,7 @@
  <?php
  // Define KLEE
 define('COMPILE','/home/kuan/llvm-gcc4.2-2.9-x86_64-linux/bin/llvm-gcc --emit-llvm -c -g '); 
-define('KLEE_INCLUDE','/home/qirong/Frog/frog_test/tools/KLEE_SOURCE_2015/klee/include/klee ');
+define('KLEE_INCLUDE','../tools/KLEE_SOURCE_2015/klee/include/klee ');
 
 session_start();
 

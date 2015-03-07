@@ -3,7 +3,7 @@
 $username = $_POST['username'];
 $password1 = $_POST['password1'];
 $password2 = $_POST['password2'];
- 
+
 if($password1 != $password2)
     printf("Not the same password");
     //header('Location: ../index.html');
